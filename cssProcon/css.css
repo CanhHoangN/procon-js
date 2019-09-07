@@ -1,0 +1,41 @@
+.el{
+    border: 1px solid black;
+    margin: 1px;
+    text-align: center;
+    height: 30px;
+    cursor: pointer;
+
+}
+.elTeamOne{
+    background: #d6b67c;
+}
+.stayHere{
+    border-radius: 50%;
+}
+.elTeamTwo{
+    background: #6d9ed2;
+}
+ul{
+    list-style-type: none !important;
+}
+body{
+    background-color: #e2e6ea !important;
+}
+.listBtnRun{
+    position: absolute;
+    top:4%;
+    left: 70%;
+    width: auto;
+    height: auto;
+
+}
+.run{
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    background: #d6b67c;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 11px;
+    margin-right: 3px;
+}

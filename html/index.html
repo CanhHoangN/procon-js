@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Render Map</title>
+    <link rel="stylesheet" href="../cssProcon/css.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <script src="../js/bootstrap.js"></script>
+
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="map">
+            <ul>
+            </ul>
+            <div class="listBtnRun">
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+        $.getJSON( "../json/D.json", function( json ) {
+            var cl = '';
+            var color = '';
+            var bol = false;
+            var agentsTeamOne = json.teams[0].agents;
+            var agentsTeamTwo = json.teams[1].agents;
+            var value ;
+            var pointsAgent ;
+            //console.log(agentsTeamOne[0].x;
+            var vtAgentTeamOne = [];
+            var vtAgentTeamTwo = [];
+            for(var i = 0 ; i < agentsTeamOne.length; i++){
+                vtAgentTeamTwo.push([agentsTeamTwo[i].x,agentsTeamTwo[i].y]);
+                vtAgentTeamOne.push([agentsTeamOne[i].x,agentsTeamOne[i].y]);
+
+
+            }
+            var sortX = [];
+            for(var i = 0 ; i < vtAgentTeamOne.length ; i++){
+                sortX[i] = vtAgentTeamOne[i][0]-1;
+            }
+            sortX.sort(function (a,b) {
+                return a-b;
+            });
+            for(var i = 0 ; i < sortX.length-1 ; i++){
+                if(sortX[i] === sortX[i+1]){
+                    sortX.splice(i,1);
+                }
+            }
+            console.log(sortX);
+            for(var i = 0 ; i < vtAgentTeamOne.length ; i++){
+
+                $(".listBtnRun").append("<button class='run'"+"value="+"'"+(vtAgentTeamOne[i][0]-1).toString()+(vtAgentTeamOne[i][1]-1).toString()+"'>"+"Agent "+(vtAgentTeamOne[i][0]).toString()+" "+(vtAgentTeamOne[i][1]).toString()+"</button")
+            }
+            /*for(var i = 0 ; i < agentsTeamOne.length ; i++){
+                for(var j = 0 ; j < agentsTeamOne.length;  j++){
+                    console.log(vtAgentTeamOne[i][j]);
+                }
+            }*/
+
+            $(".map").css({
+               width:json.width*40+json.width*2+40
+            });
+            for(var i = 0 ; i < json.height ; i++){
+                for(var j = 0 ; j < json.width ; j++){
+                    for(var z = 0 ; z < agentsTeamTwo.length ; z++){
+                        if(i === agentsTeamOne[z].x-1 && j === agentsTeamOne[z].y-1){
+                            cl = "el elTeamOne";
+                            break;
+                        }else if(i === agentsTeamTwo[z].x-1 && j === agentsTeamTwo[z].y-1){
+                            cl = "el elTeamTwo";
+                            break;
+                        }else{
+                            cl = "el";
+                        }
+                    }
+                    $("ul").append("<li"+ " class="+"'"+cl+"'" +" style='width: 40px;float:left'"+" value="+"'"+i.toString()+j.toString()+"'>".concat(json.points[i][j]+"</li>"));
+                }
+
+            }
+            $(".run").click(function () {
+               bol = true;
+               pointsAgent = $(this).attr('value');
+            });
+            $("li").click(function () {
+                //var valueNow = $(this).attr('value');
+                $('li[value='+value+']').removeClass('stayHere');
+
+
+                var point = $(this).attr('value');
+               if(bol === true){
+                    $(this).addClass("elTeamOne stayHere");
+                    $(this).attr({
+                        value:pointsAgent
+                    })
+               }
+               bol = false;
+               value = $(this).attr('value');
+            });
+
+
+        });
+
+    });
+</script>
+</body>
+</html>
