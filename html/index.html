@@ -45,10 +45,13 @@
             </form>
         </div>
         <div class="demo">
+            <br>
             <button id="action">action</button>
         </div>
     </div>
 <script>
+    // get token roi dan vao day
+    var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVhbTEiLCJpYXQiOjE1NzAwMjc4NjAsImV4cCI6MTU3MDAzNTA2MH0.cv2I8Kz5yhrIvzIpiNH-440d2rUzHjzV0HveNtj3W_c";
     var prevGame = [
         {
             "id": 0,
@@ -109,28 +112,66 @@
             }
         ]
     };
+
+
+
     $(document).ready(function () {
+        var json = {};
 
-       /* $.ajax({
-           url: 'http://sv-procon.uet.vnu.edu.vn:3000/matches',
-           type:'GET',
-           dateType:'json',
-            headers: {"Authorization":'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVhbTEiLCJpYXQiOjE1Njk4NjE1MzAsImV4cCI6MTU2OTg2ODczMH0.TRv0KZGsQTOLq_O_ebaxxV-U_FHSfrEHgwDnsO98Cls'},
-           success:function (data) {
-               console.log(data);
-           },
-           error:function (error) {
-             console.log(error);
-           }
+        function getJson(data){
+            json = data;
+        }
+        var arrId = function(){
+            var arr =[];
+            $.ajax({
+                async: false,
+                url: 'http://sv-procon.uet.vnu.edu.vn:3000/matches',
+                type:'GET',
+                dateType:'json',
+                headers: {"Authorization":token},
+                success:function (data) {
+                    console.log(data);
+                    arr = data;
+                },
+                error:function (error) {
+                    console.log(error);
+                }
 
-        });
-        var json = {
+            });
+            return arr;
+
+        }();
+
+        var id = arrId[0].id;
+        console.log("id "+id);
+        function getState(){
+            var res = null;
+            $.ajax({
+                async: false,
+                url: 'http://sv-procon.uet.vnu.edu.vn:3000/matches/'.concat(id+"'"),
+                type:'GET',
+                dateType:'json',
+                headers: {"Authorization":token},
+                success:function (data) {
+                    console.log(data);
+                    res = data;
+                },
+                error:function (error) {
+                    console.log(error);
+                }
+
+            });
+            return res;
+        }
+        json = getState();
+        // console.log("asdas"+json.points);
+        var json1= {
             "actions": [
                 {
                     "agentID": 1,
                     "type": "move",
-                    "dx": 1,
-                    "dy": 1,
+                    "dx": -1,
+                    "dy": -1,
                     "turn": 1
                 },
                 {
@@ -141,150 +182,114 @@
                 }
             ]
         };
-        $.ajax({
-            url: 'http://sv-procon.uet.vnu.edu.vn:3000/matches/190/action',
-            type:'POST',
-            dateType:'json',
-            contentType: 'application/json',
-            data:JSON.stringify(json),
-            headers: {"Authorization":'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVhbTEiLCJpYXQiOjE1Njk4NjE1MzAsImV4cCI6MTU2OTg2ODczMH0.TRv0KZGsQTOLq_O_ebaxxV-U_FHSfrEHgwDnsO98Cls'},
-            success:function (data) {
-                console.log(data);
-            },
-            error:function (error) {
-                console.log(error);
-            }
-        });*/
-        //http://sv-procon.uet.vnu.edu.vn:3000/?fbclid=IwAR2_CbpZEt31uxr_HyUWlSzO88GM_yQLZ0_IH_eKlW2896G61Xciur5Wrrk/?fbclid=IwAR2_CbpZEt31uxr_HyUWlSzO88GM_yQLZ0_IH_eKlW2896G61Xciur5Wrrk
-       /* var getToJon = {};
-        $.ajax({
-           url: 'http://sv-procon.uet.vnu.edu.vn:3000/matches/'
-        });*/
-        var prevAgentsTeamOne = [];
-        var prevAgentsTeamTwo = [];
+
+        function postAction(){
+            $.ajax({
+                url: 'http://sv-procon.uet.vnu.edu.vn:3000/matches/'.concat(id+'/action'),
+                type:'POST',
+                dateType:'json',
+                contentType: 'application/json',
+                data:JSON.stringify(json1),
+                headers: {"Authorization":token},
+                success:function (data) {
+                    console.log(data);
+                },
+                error:function (error) {
+                    console.log(error);
+                }
+            });
+        }
+        $('#action').click(function () {
+            postAction();
+            json = getState();
+            location.reload();
+
+
+        });
         var actionTeamOne = {};
         var actionTeamTwo = {};
-        $.getJSON( "../json/D.json", function( json ) {
-            getToJon = json;
-            var cl = '';
-            var color = '';
-            var bol = false;
-            var agentsTeamOne = json.teams[0].agents;
-            var agentsTeamTwo = json.teams[1].agents;
-            var tiled = json.tiled;
-            console.log(tiled);
-            var value ;
-            var pointsAgent ;
-            //console.log(agentsTeamOne[0].x;
-            var vtAgentTeamOne = [];
-            var vtAgentTeamTwo = [];
-            var pointElTeamOne = 1;
-            var pointElTeamTwo = 1;
-            for(var i = 0 ; i < agentsTeamOne.length; i++){
-               // vtAgentTeamTwo.push([agentsTeamTwo[i].x,agentsTeamTwo[i].y]);
-               // vtAgentTeamOne.push([agentsTeamOne[i].x,agentsTeamOne[i].y]);
-                prevAgentsTeamOne.push([agentsTeamTwo[i].x,agentsTeamTwo[i].y]);
-                prevAgentsTeamTwo.push([agentsTeamOne[i].x,agentsTeamOne[i].y]);
-            }
-            console.log(prevAgentsTeamOne);
-            console.log(prevAgentsTeamTwo);
-         /*   var sortX = [];
-            for(var i = 0 ; i < vtAgentTeamOne.length ; i++){
-                sortX[i] = vtAgentTeamOne[i][0]-1;
-            }
-            sortX.sort(function (a,b) {
-                return a-b;
-            });
-            for(var i = 0 ; i < sortX.length-1 ; i++){
-                if(sortX[i] === sortX[i+1]){
-                    sortX.splice(i,1);
-                }
-            }
-            console.log(sortX);
-            for(var i = 0 ; i < vtAgentTeamOne.length ; i++){
 
-                $(".listBtnRun").append("<button class='run'"+"value="+"'"+(vtAgentTeamOne[i][0]-1).toString()+(vtAgentTeamOne[i][1]-1).toString()+"'>"+"Agent "+(vtAgentTeamOne[i][0]).toString()+" "+(vtAgentTeamOne[i][1]).toString()+"</button")
-            }*/
+        var cl = '';
+        var color = '';
+        var bol = false;
+        var agentsTeamOne = json.teams[0].agents;
+        var agentsTeamTwo = json.teams[1].agents;
+        var idTeamOne = json.teams[0].teamID;
+        var idTeamTwo = json.teams[1].teamID;
+        // idTeamTwo =json.teams[1];
+        //console.log(agentsTeamOne);
+        var tiled = json.tiled;
+        // console.log(tiled);
+        var value ;
+        var pointsAgent ;
+        //console.log(agentsTeamOne[0].x;
+        var vtAgentTeamOne = [];
+        var vtAgentTeamTwo = [];
+        var pointElTeamOne = 1;
+        var pointElTeamTwo = 1;
+       /* for(var i = 0 ; i < agentsTeamOne.length; i++){
+            prevAgentsTeamOne.push([agentsTeamTwo[i].x,agentsTeamTwo[i].y]);
+            prevAgentsTeamTwo.push([agentsTeamOne[i].x,agentsTeamOne[i].y]);
+        }*/
 
-            $(".map").css({
-               width:json.width*40+json.width*2+40,
-               height: json.height*35+json.height*2
-            });
-            for(var i = 0 ; i < getToJon.height ; i++){
-                for(var j = 0 ; j < getToJon.width ; j++){
-                    if(tiled[i][j] === 1){
-                        cl = "el elTeamOne";
-                        $("ul").append("<li"+ " class="+"'"+cl+"'" +" style='width: 40px;float:left'"+" value="+"'"+pointElTeamOne.toString()+"'>".concat("("+pointElTeamOne+")"+getToJon.points[i][j]+"</li>"));
-                        pointElTeamOne++;
-                    }else if(tiled[i][j] === 2){
-                        cl = "el elTeamTwo";
-                        $("ul").append("<li"+ " class="+"'"+cl+"'" +" style='width: 40px;float:left'"+" value="+"'"+i.toString()+j.toString()+"'>".concat("("+pointElTeamTwo+")"+getToJon.points[i][j]+"</li>"));
-                        pointElTeamTwo++;
-                    }else{
-                        cl = "el";
-                        $("ul").append("<li"+ " class="+"'"+cl+"'" +" style='width: 40px;float:left'"+" value="+"'"+i.toString()+j.toString()+"'>".concat(getToJon.points[i][j]+"</li>"));
-                    }
-                   /* for(var z = 0 ; z < agentsTeamTwo.length ; z++){
-                        if(i === agentsTeamOne[z].x-1 && j === agentsTeamOne[z].y-1){
-                            cl = "el elTeamOne";
-                            $("ul").append("<li"+ " class="+"'"+cl+"'" +" style='width: 40px;float:left'"+" value="+"'"+pointElTeamOne.toString()+"'>".concat("("+pointElTeamOne+")"+getToJon.points[i][j]+"</li>"));
-                            pointElTeamOne++;
-                            break;
-                        }else if(i === agentsTeamTwo[z].x-1 && j === agentsTeamTwo[z].y-1){
-                            cl = "el elTeamTwo";
-                            $("ul").append("<li"+ " class="+"'"+cl+"'" +" style='width: 40px;float:left'"+" value="+"'"+i.toString()+j.toString()+"'>".concat("("+pointElTeamTwo+")"+getToJon.points[i][j]+"</li>"));
-                            pointElTeamTwo++;
-                            break;
-                        }else{
-                            cl = "el";
-                        }
-                    }
-                    if(cl == "el"){
-                        $("ul").append("<li"+ " class="+"'"+cl+"'" +" style='width: 40px;float:left'"+" value="+"'"+i.toString()+j.toString()+"'>".concat(getToJon.points[i][j]+"</li>"));
-                    }*/
-
+        $(".map").css({
+            width:json.width*40+json.width*2+40,
+            height: json.height*35+json.height*2
+        });
+        for(var i = 0 ; i < json.height ; i++){
+            for(var j = 0 ; j < json.width ; j++){
+                if(tiled[i][j] === idTeamOne){
+                    cl = "el elTeamOne";
+                    $("ul").append("<li"+ " class="+"'"+cl+"'" +" style='width: 40px;float:left'"+" value="+"'"+pointElTeamOne.toString()+"'>".concat("("+pointElTeamOne+")"+json.points[i][j]+"</li>"));
+                    pointElTeamOne++;
+                }else if(tiled[i][j] === idTeamTwo){
+                    cl = "el elTeamTwo";
+                    $("ul").append("<li"+ " class="+"'"+cl+"'" +" style='width: 40px;float:left'"+" value="+"'"+i.toString()+j.toString()+"'>".concat("("+pointElTeamTwo+")"+json.points[i][j]+"</li>"));
+                    pointElTeamTwo++;
+                }else{
+                    cl = "el";
+                    $("ul").append("<li"+ " class="+"'"+cl+"'" +" style='width: 40px;float:left'"+" value="+"'"+i.toString()+j.toString()+"'>".concat(json.points[i][j]+"</li>"));
                 }
 
+
             }
-           /* $(".run").click(function () {
-               bol = true;
-               pointsAgent = $(this).attr('value');
-            });*/
-            $("li").click(function () {
-                $('li[value='+value+']').removeClass('stayHere');
 
-                var point = $(this).attr('value');
-               if(bol === true){
-                    $(this).addClass("elTeamOne stayHere");
-                    $(this).attr({
-                        value:pointsAgent
-                    })
-               }
-               bol = false;
-               value = $(this).attr('value');
-            });
+        }
 
-            $('li').click(function () {
-                //alert($(this).attr('value'));
-                $('#agentid').attr({
-                   value:$(this).attr('value')
+       /* $("li").click(function () {
+            $('li[value='+value+']').removeClass('stayHere');
+
+            var point = $(this).attr('value');
+            if(bol === true){
+                $(this).addClass("elTeamOne stayHere");
+                $(this).attr({
+                    value:pointsAgent
                 })
-            });
-            $('#action').click(function(){
-               var obj =
+            }
+            bol = false;
+            value = $(this).attr('value');
+        });
+
+        $('li').click(function () {
+            //alert($(this).attr('value'));
+            $('#agentid').attr({
+                value:$(this).attr('value')
+            })
+        });
+        $('#action').click(function(){
+            var obj =
                 {
                     "actions": [
-                    {
-                        "agentID": $('#agentid').val(),
-                        "dx": $('#dx').val(),
-                        "dy": $('#dy').val(),
-                        "type": $('select').val()
-                    }
-                ]
+                        {
+                            "agentID": $('#agentid').val(),
+                            "dx": $('#dx').val(),
+                            "dy": $('#dy').val(),
+                            "type": $('select').val()
+                        }
+                    ]
                 };
-                console.log(JSON.stringify(obj));
-            });
-        });
+            console.log(JSON.stringify(obj));
+        });*/
 
 
     });
