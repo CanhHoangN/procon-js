@@ -37,7 +37,7 @@
     </div>
 <script>
     // get token roi dan vao day
-    var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVhbTEiLCJpYXQiOjE1NzAzNzM4OTAsImV4cCI6MTU3MDM4MTA5MH0.RMzbVRKhCdXA7pW8UIkjwqCpnxZX3xroo_j6taS21qM";
+    var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVhbTFfdGVzdCIsImlhdCI6MTU3MDQ2MDAwNSwiZXhwIjoxNTcwNDY3MjA1fQ.U7f43cUrnpreCyaq-DNSuXFQYpa_gsyEe8ovq-B6Szc";
     var prevGame = [
         {
             "id": 0,
@@ -160,7 +160,7 @@
         var json1= {
             "actions": [
                 {
-                    "agentID": 2,
+                    "agentID": 9,
                     "type": "move",
                     "dx": 1,
                     "dy": 0,
@@ -228,6 +228,22 @@
                 tf : false
             }
         }
+        function checkPoint_two(i,j) {
+
+            for(var z = 0 ; z < 5 ; z++){
+
+                if(((vtAgentTeamTwo[z].x-1) === i )&& ((vtAgentTeamTwo[z].y-1) === j)){
+                    return {
+                        agent : vtAgentTeamTwo[z].agentID,
+                        tf : true
+                    };
+                }
+            }
+            return {
+                agent : null,
+                tf : false
+            }
+        }
 
         var pointElTeamOne = 1;
         var pointElTeamTwo = 1;
@@ -257,7 +273,14 @@
                         pointElTeamOne++;
                     }else if(tiled[i][j] === idTeamTwo){
                         cl = "el elTeamTwo";
-                        $("ul").append("<li"+ " class="+"'"+cl+"'" +" style='width: 40px;float:left'"+" value="+"'"+i.toString()+j.toString()+"'>".concat(json.points[i][j]+"</li>"));
+                        var point_two = checkPoint_two(j,i);
+                        if(point_two.tf === true){
+                            $("ul").append("<li"+ " class="+"'"+cl+"'" +" style='width: 40px;float:left'"+" value="+"'"+i.toString()+j.toString()+"'>".concat("("+point_two.agent+")"+json.points[i][j]+"</li>"));
+                        }else
+                        {
+                            $("ul").append("<li"+ " class="+"'"+cl+"'" +" style='width: 40px;float:left'"+" value="+"'"+i.toString()+j.toString()+"'>".concat(json.points[i][j]+"</li>"));
+                        }
+
                         pointElTeamTwo++;
                     }else{
                         cl = "el";
