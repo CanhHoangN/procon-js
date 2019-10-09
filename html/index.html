@@ -26,29 +26,37 @@
 
 <body>
     <div class="container">
-        <div class="img">
-            <img src="../img/hd.png"/>
-        </div>
-        <div class="map">
+        <div class="map row">
             <ul id="map">
             </ul>
         </div>
 
         <div class="action-agent">
             <ul id="action_agent">
-                <li value="down"><i style="padding: 10px" class="fas fa-arrow-down"></i></li>
+                <li value="left"><i style="padding: 10px;" class="fas fa-arrow-left"></i></li>
                 <li value="up"><i style="padding: 10px" class="fas fa-arrow-up"></i></li>
                 <li value="right"><i style="padding: 10px;" class="fas fa-arrow-right"></i></li>
-                <li value="left"><i style="padding: 10px;" class="fas fa-arrow-left"></i></li>
+                <li value="down"><i style="padding: 10px" class="fas fa-arrow-down"></i></li>
+
+                <li value="up-left"><i style="padding: 10px" class="fas fa-arrow-up up-left"></i></li>
+                <li value="up-right"><i style="padding: 10px" class="fas fa-arrow-up up-right"></i></li>
+                <li value="down-right"><i style="padding: 10px" class="fas fa-arrow-up down-right"></i></li>
+                <li value="down-left"><i style="padding: 10px" class="fas fa-arrow-up down-left"></i></li>
             </ul>
+            <button id="demo">action</button>
+            <div class="json">
+                <textarea id="json" name="json" cols="30" rows="10">
+
+                </textarea>
+            </div>
         </div>
         <div class="demo">
-            <button id="demo">action</button>
+
         </div>
     </div>
 <script>
     // get token roi dan vao day
-    var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVhbTEiLCJpYXQiOjE1NzA2MzMwOTksImV4cCI6MTU3MDY0MDI5OX0.TvD3yOQINPwPRVyI37ChT8kNgtWtvHS5AvS0htrCczM";
+    var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVhbTEiLCJpYXQiOjE1NzA2MzQzNTAsImV4cCI6MTU3MDY0MTU1MH0.93Fe49b_r1SxsKHHWGpKFIMufwetLKTleTnfZjWOENw";
     var prevGame = [
         {
             "id": 0,
@@ -116,6 +124,7 @@
     };
 
     $(document).ready(function () {
+        var ac = {};
         var load = true;
         var json = {};
         var pointAgents = {};
@@ -314,7 +323,7 @@
         $("#action_agent li").click(function () {
             var move = $(this).attr('value');
             if(move === "down"){
-               var  ac ={
+                 ac ={
                     "agentID": parseInt(agent_li),
                      "type": "move",
                     "dx": 0,
@@ -324,7 +333,7 @@
                  action_json.actions.push(ac);
                  console.log(action_json);
             }else if(move === "up"){
-                var ac ={
+                 ac ={
                     "agentID": parseInt(agent_li),
                     "type": "move",
                     "dx": 0,
@@ -334,7 +343,7 @@
                 action_json.actions.push(ac);
                 console.log(action_json);
             }else if(move === "right"){
-                var ac ={
+                 ac ={
                     "agentID": parseInt(agent_li),
                     "type": "move",
                     "dx": 1,
@@ -344,7 +353,7 @@
                 action_json.actions.push(ac);
                 console.log(action_json);
             }else if(move === "left"){
-               var ac ={
+                ac ={
                     "agentID": parseInt(agent_li),
                     "type": "move",
                     "dx": -1,
@@ -353,7 +362,48 @@
                 };
                 action_json.actions.push(ac);
                 console.log(action_json);
+            }else if(move === "up-right"){
+                 ac ={
+                    "agentID": parseInt(agent_li),
+                    "type": "move",
+                    "dx": 1,
+                    "dy": -1,
+
+                };
+                action_json.actions.push(ac);
+                console.log(action_json);
+            }else if(move === "up-left"){
+                 ac ={
+                    "agentID": parseInt(agent_li),
+                    "type": "move",
+                    "dx": -1,
+                    "dy": -1,
+
+                };
+                action_json.actions.push(ac);
+                console.log(action_json);
+            }else if(move === "down-right"){
+                 ac ={
+                    "agentID": parseInt(agent_li),
+                    "type": "move",
+                    "dx": 1,
+                    "dy": 1,
+
+                };
+                action_json.actions.push(ac);
+                console.log(action_json);
+            }else if(move === "down-left"){
+                 ac ={
+                    "agentID": parseInt(agent_li),
+                    "type": "move",
+                    "dx": -1,
+                    "dy": 1,
+
+                };
+                action_json.actions.push(ac);
+                console.log(action_json);
             }
+            $("#json").val(JSON.stringify(action_json));
         });
 
 
@@ -373,6 +423,8 @@
             console.log(JSON.stringify(obj));
         });
         $("#demo").click(function () {
+            var json_text = $('#json').val();
+            action_json = JSON.parse(json_text);
 
             postAction();
             console.log(JSON.stringify(json1));

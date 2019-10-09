@@ -47,4 +47,29 @@ body{
     font-size: 30px;
 
 }
+.action-agent {
+    position: absolute;
+    right: 2%;
+    top: 0%;
+}
+.json {
+    margin-left: 12%;
+    margin-top: 3%;
+}
+button#demo {
+    margin-left: 50%;
+}
+i.fas.fa-arrow-up.up-right {transform: rotate(45deg);}
+
+i.fas.fa-arrow-up.up-left {
+    transform: rotate(-45deg);
+}
+
+i.fas.fa-arrow-up.down-right {
+    transform: rotate(135deg);
+}
+
+i.fas.fa-arrow-up.down-left {
+    transform: rotate(225deg);
+}
 
