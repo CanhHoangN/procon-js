@@ -39,3 +39,12 @@ body{
     font-size: 11px;
     margin-right: 3px;
 }
+.action-agent ul li {
+    float: left;
+    cursor: pointer;
+}
+.action-agent ul li i{
+    font-size: 30px;
+
+}
+
