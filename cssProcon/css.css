@@ -72,4 +72,25 @@ i.fas.fa-arrow-up.down-right {
 i.fas.fa-arrow-up.down-left {
     transform: rotate(225deg);
 }
+.stateGame.col-sm-3 {
+    position: absolute;
+    top: 53%;
+    right: 3%;
+    background: cadetblue;
+    border: 1px solid white;
+    border-radius: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+textarea {
+    overflow: auto;
+    resize: none !important;
+}
 
+strong {
+    color: red;
+}
+
+.stateGame.col-sm-3 {
+    color: wheat;
+}

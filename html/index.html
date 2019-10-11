@@ -25,7 +25,7 @@
 </head>
 
 <body>
-    <div class="container">
+    <div class="container-fluid">
         <div class="map row">
             <ul id="map">
             </ul>
@@ -50,13 +50,22 @@
                 </textarea>
             </div>
         </div>
-        <div class="demo">
-
+        <div class="stateGame col-sm-3">
+            <div class="row">
+                <div class="col-sm-6 score-1">
+                    <label>titlePoint-1: <strong id="title-point-1">3</strong></label><br>
+                    <label>areaPoint-1: <strong id="area-point-1">4</strong></label>
+                </div>
+                <div class="col-sm-6 score-2">
+                    <label>titlePoint-2:  <strong id="title-point-2">5</strong></label><br>
+                    <label>areaPoint-2: <strong id="area-point-2">4</strong></label>
+                </div>
+            </div>
         </div>
     </div>
 <script>
     // get token roi dan vao day
-    var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVhbTEiLCJpYXQiOjE1NzA2MzQzNTAsImV4cCI6MTU3MDY0MTU1MH0.93Fe49b_r1SxsKHHWGpKFIMufwetLKTleTnfZjWOENw";
+    var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVhbTEiLCJpYXQiOjE1NzA3MjYwMTUsImV4cCI6MTU3MDczMzIxNX0.7Ch7Y2qig6I_EUKN6UaWjORryHqwEqaJ1AX6KppRD5Y";
     var prevGame = [
         {
             "id": 0,
@@ -179,22 +188,15 @@
             load = false;
             json = getState();
         }
-
-        // console.log("asdas"+json.points);
-        var json1= {
-            "actions": [
-                {
-                    "agentID": 1,
-                    "type": "move",
-                    "dx": 1,
-                    "dy": 0,
-                }
-            ]
-        };
+        console.log("Point: "+json.teams[0].tilePoint);
+        $("#title-point-1").text(json.teams[0].tilePoint);
+        $("#title-point-2").text(json.teams[1].tilePoint);
+        $("#area-point-1").text(json.teams[0].areaPoint);
+        $("#area-point-2").text(json.teams[1].areaPoint);
 
 
         function postAction(){
-            //console.log("json "+ JSON.stringify(action_json));
+
             $.ajax({
                 url: 'http://sv-procon.uet.vnu.edu.vn:3000/matches/'.concat(id+'/action'),
                 type:'POST',
@@ -209,28 +211,18 @@
                     console.log(error);
                 }
             }).done(function () {
-                //setTimeout(function(){ location.reload(); }, 10000);
+                setTimeout(function(){ location.reload(); }, 10000);
             });
 
 
         }
-        var actionTeamOne = {};
-        var actionTeamTwo = {};
-
-        var cl = '';
-        var color = '';
-        var bol = false;
-        var agentsTeamOne = json.teams[0].agents;
-        var agentsTeamTwo = json.teams[1].agents;
+        var pointElTeamOne = 0;
+        var pointElTeamTwo = 0;
         var idTeamOne = json.teams[0].teamID;
         var idTeamTwo = json.teams[1].teamID;
-        // idTeamTwo =json.teams[1];
-        //console.log(agentsTeamOne);
+
         var tiled = json.tiled;
-        // console.log(tiled);
-        var value ;
-        var pointsAgent ;
-        //console.log(agentsTeamOne[0].x;
+
         var vtAgentTeamOne = json.teams[0].agents;
         console.log(vtAgentTeamOne);
         var vtAgentTeamTwo = json.teams[1].agents;
@@ -266,13 +258,6 @@
                 tf : false
             }
         }
-
-        var pointElTeamOne = 1;
-        var pointElTeamTwo = 1;
-       /* for(var i = 0 ; i < agentsTeamOne.length; i++){
-            prevAgentsTeamOne.push([agentsTeamTwo[i].x,agentsTeamTwo[i].y]);
-            prevAgentsTeamTwo.push([agentsTeamOne[i].x,agentsTeamOne[i].y]);
-        }*/
 
         $(".map").css({
             width:json.width*40+json.width*2+40,
@@ -406,22 +391,6 @@
             $("#json").val(JSON.stringify(action_json));
         });
 
-
-
-        $('#action').click(function(){
-            var obj =
-                {
-                    "actions": [
-                        {
-                            "agentID": $('#agentid').val(),
-                            "dx": $('#dx').val(),
-                            "dy": $('#dy').val(),
-                            "type": $('select').val()
-                        }
-                    ]
-                };
-            console.log(JSON.stringify(obj));
-        });
         $("#demo").click(function () {
             var json_text = $('#json').val();
             action_json = JSON.parse(json_text);
