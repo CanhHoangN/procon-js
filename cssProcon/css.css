@@ -72,10 +72,8 @@ i.fas.fa-arrow-up.down-right {
 i.fas.fa-arrow-up.down-left {
     transform: rotate(225deg);
 }
-.stateGame.col-sm-3 {
-    position: absolute;
-    top: 53%;
-    right: 3%;
+.stateGame.col-sm-12 {
+
     background: cadetblue;
     border: 1px solid white;
     border-radius: 10px;

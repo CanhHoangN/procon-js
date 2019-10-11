@@ -32,6 +32,18 @@
         </div>
 
         <div class="action-agent">
+            <div class="stateGame col-sm-12">
+                <div class="row">
+                    <div class="col-sm-6 score-1">
+                        <label>titlePoint-1: <strong id="title-point-1">3</strong></label><br>
+                        <label>areaPoint-1: <strong id="area-point-1">4</strong></label>
+                    </div>
+                    <div class="col-sm-6 score-2">
+                        <label>titlePoint-2:  <strong id="title-point-2">5</strong></label><br>
+                        <label>areaPoint-2: <strong id="area-point-2">4</strong></label>
+                    </div>
+                </div>
+            </div>
             <ul id="action_agent">
                 <li value="left"><i style="padding: 10px;" class="fas fa-arrow-left"></i></li>
                 <li value="up"><i style="padding: 10px" class="fas fa-arrow-up"></i></li>
@@ -50,22 +62,11 @@
                 </textarea>
             </div>
         </div>
-        <div class="stateGame col-sm-3">
-            <div class="row">
-                <div class="col-sm-6 score-1">
-                    <label>titlePoint-1: <strong id="title-point-1">3</strong></label><br>
-                    <label>areaPoint-1: <strong id="area-point-1">4</strong></label>
-                </div>
-                <div class="col-sm-6 score-2">
-                    <label>titlePoint-2:  <strong id="title-point-2">5</strong></label><br>
-                    <label>areaPoint-2: <strong id="area-point-2">4</strong></label>
-                </div>
-            </div>
-        </div>
+
     </div>
 <script>
     // get token roi dan vao day
-    var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVhbTEiLCJpYXQiOjE1NzA3MjYwMTUsImV4cCI6MTU3MDczMzIxNX0.7Ch7Y2qig6I_EUKN6UaWjORryHqwEqaJ1AX6KppRD5Y";
+    var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVhbTEiLCJpYXQiOjE1NzA4MDQ4MTAsImV4cCI6MTU3MDgxMjAxMH0.PQ8j04Q_vHBvpMjyKJCARMfRVhCpNO12F5uKsPBlsiw";
     var prevGame = [
         {
             "id": 0,
@@ -396,7 +397,6 @@
             action_json = JSON.parse(json_text);
 
             postAction();
-            console.log(JSON.stringify(json1));
             console.log(JSON.stringify(action_json));
         })
 
