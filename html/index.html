@@ -35,10 +35,13 @@
             <div class="stateGame col-sm-12">
                 <div class="row">
                     <div class="col-sm-6 score-1">
+                        <label>Turn Current:<strong id="turn">3</strong> </label><br>
+                        <label>timeTurn: <strong id="time-turn">3</strong></label><br>
                         <label>titlePoint-1: <strong id="title-point-1">3</strong></label><br>
                         <label>areaPoint-1: <strong id="area-point-1">4</strong></label>
                     </div>
                     <div class="col-sm-6 score-2">
+                        <label>intervalMillis: <strong id="time-turn-1">3</strong></label><br>
                         <label>titlePoint-2:  <strong id="title-point-2">5</strong></label><br>
                         <label>areaPoint-2: <strong id="area-point-2">4</strong></label>
                     </div>
@@ -66,20 +69,41 @@
     </div>
 <script>
     // get token roi dan vao day
-    var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVhbTEiLCJpYXQiOjE1NzA4MDU4OTIsImV4cCI6MTU3MDgxMzA5Mn0.LgwMajPeh5D_nTbcVk3_bYWg_ZfB9CDuUAGTZQdDYig";
+    var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVhbTEiLCJpYXQiOjE1NzEwNjM2OTAsImV4cCI6MTU3MTA3MDg5MH0.Gso75QZOBmte0XRHGlPCcPpO9VTY1WiwY4PaP1JFRU8";
     var agent_li = 0;
     var action_json = {
         "actions":[]
     };
+    var json_demo = {
+        "actions": [
+            {
+                "agentID": 1,
+                "type": "move",
+                "dx": 1,
+                "dy": 1,
+                "turn":34
+            },
+            {
+                "agentID": 2,
+                "type": "move",
+                "dx": -1,
+                "dy": -1,
 
+            }
+        ]
+    };
+    var demo = {
+        "actions": [
+            {
+                "demo":1
+            }
+        ]
+    };
     $(document).ready(function () {
         var ac = {};
         var load = true;
         var json = {};
         var pointAgents = {};
-        function getJson(data){
-            json = data;
-        }
         var arrId = function(){
             var arr =[];
             $.ajax({
@@ -102,9 +126,9 @@
 
         }();
 
+
         var id = arrId[0].id;
         console.log("id "+id);
-        if(load === true){
             function getState(){
                 var res = null;
                 $.ajax({
@@ -127,23 +151,24 @@
             }
             load = false;
             json = getState();
-        }
         //console.log("Point: "+json.teams[0].tilePoint);
+        $("#time-turn").text(arrId[0].turnMillis);
+        $("#time-turn-1").text(arrId[0].intervalMillis);
         $("#title-point-1").text(json.teams[0].tilePoint);
+        $("#turn").text(json.turn);
         $("#title-point-2").text(json.teams[1].tilePoint);
         $("#area-point-1").text(json.teams[0].areaPoint);
         $("#area-point-2").text(json.teams[1].areaPoint);
 
 
         function postAction(){
-
             $.ajax({
                 url: 'http://sv-procon.uet.vnu.edu.vn:3000/matches/'.concat(id+'/action'),
+                headers: {"Authorization":token},
                 type:'POST',
                 dateType:'json',
                 contentType: 'application/json',
                 data:JSON.stringify(action_json),
-                headers: {"Authorization":token},
                 success:function (data) {
                     console.log("data: "+JSON.stringify(data));
                 },
@@ -153,7 +178,6 @@
             }).done(function () {
                 setTimeout(function(){ location.reload(); }, 10000);
             });
-
 
         }
         var pointElTeamOne = 0;
@@ -252,9 +276,9 @@
             if(move === "down"){
                  ac ={
                     "agentID": parseInt(agent_li),
-                     "type": "move",
                     "dx": 0,
                     "dy": 1,
+                    "type":"move"
 
                  };
                  action_json.actions.push(ac);
@@ -262,9 +286,9 @@
             }else if(move === "up"){
                  ac ={
                     "agentID": parseInt(agent_li),
-                    "type": "move",
                     "dx": 0,
                     "dy": -1,
+                    "type":"move"
 
                 };
                 action_json.actions.push(ac);
@@ -272,9 +296,9 @@
             }else if(move === "right"){
                  ac ={
                     "agentID": parseInt(agent_li),
-                    "type": "move",
                     "dx": 1,
                     "dy": 0,
+                    "type":"move"
 
                 };
                 action_json.actions.push(ac);
@@ -282,9 +306,9 @@
             }else if(move === "left"){
                 ac ={
                     "agentID": parseInt(agent_li),
-                    "type": "move",
                     "dx": -1,
                     "dy": 0,
+                    "type":"move"
 
                 };
                 action_json.actions.push(ac);
@@ -292,9 +316,9 @@
             }else if(move === "up-right"){
                  ac ={
                     "agentID": parseInt(agent_li),
-                    "type": "move",
                     "dx": 1,
                     "dy": -1,
+                    "type":"move"
 
                 };
                 action_json.actions.push(ac);
@@ -302,9 +326,9 @@
             }else if(move === "up-left"){
                  ac ={
                     "agentID": parseInt(agent_li),
-                    "type": "move",
                     "dx": -1,
                     "dy": -1,
+                    "type":"move"
 
                 };
                 action_json.actions.push(ac);
@@ -312,9 +336,9 @@
             }else if(move === "down-right"){
                  ac ={
                     "agentID": parseInt(agent_li),
-                    "type": "move",
                     "dx": 1,
                     "dy": 1,
+                    "type":"move"
 
                 };
                 action_json.actions.push(ac);
@@ -322,9 +346,9 @@
             }else if(move === "down-left"){
                  ac ={
                     "agentID": parseInt(agent_li),
-                    "type": "move",
                     "dx": -1,
                     "dy": 1,
+                    "type":"moves"
 
                 };
                 action_json.actions.push(ac);
@@ -336,7 +360,6 @@
         $("#demo").click(function () {
             var json_text = $('#json').val();
             action_json = JSON.parse(json_text);
-
             postAction();
             console.log(JSON.stringify(action_json));
         })
