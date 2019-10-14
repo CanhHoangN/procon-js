@@ -41,6 +41,7 @@
                         <label>areaPoint-1: <strong id="area-point-1">4</strong></label>
                     </div>
                     <div class="col-sm-6 score-2">
+                        <label>Total turn:<strong id="total-turn">3</strong> </label><br>
                         <label>intervalMillis: <strong id="time-turn-1">3</strong></label><br>
                         <label>titlePoint-2:  <strong id="title-point-2">5</strong></label><br>
                         <label>areaPoint-2: <strong id="area-point-2">4</strong></label>
@@ -156,6 +157,7 @@
         $("#time-turn-1").text(arrId[0].intervalMillis);
         $("#title-point-1").text(json.teams[0].tilePoint);
         $("#turn").text(json.turn);
+        $("#total-turn").text(arrId[0].turns);
         $("#title-point-2").text(json.teams[1].tilePoint);
         $("#area-point-1").text(json.teams[0].areaPoint);
         $("#area-point-2").text(json.teams[1].areaPoint);
@@ -176,7 +178,7 @@
                     console.log(error);
                 }
             }).done(function () {
-                setTimeout(function(){ location.reload(); }, 10000);
+                setTimeout(function(){ location.reload(); }, ((arrId[0].turnMillis + arrId[0].intervalMillis)*1000));
             });
 
         }
