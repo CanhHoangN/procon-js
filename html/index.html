@@ -178,7 +178,7 @@
                     console.log(error);
                 }
             }).done(function () {
-                setTimeout(function(){ location.reload(); }, ((arrId[0].turnMillis + arrId[0].intervalMillis)*1000));
+                setTimeout(function(){ location.reload(); }, ((arrId[0].turnMillis + arrId[0].intervalMillis-15)*1000));
             });
 
         }
@@ -271,6 +271,9 @@
 
         $("#map li").click(function () {
             agent_li = $(this).attr('value');
+            $(this).css({
+               background:'red'
+            });
 
         });
         $("#action_agent li").click(function () {
@@ -350,7 +353,7 @@
                     "agentID": parseInt(agent_li),
                     "dx": -1,
                     "dy": 1,
-                    "type":"moves"
+                    "type":"move"
 
                 };
                 action_json.actions.push(ac);
