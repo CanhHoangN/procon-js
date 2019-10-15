@@ -41,6 +41,7 @@
                         <label>areaPoint-1: <strong id="area-point-1">4</strong></label>
                     </div>
                     <div class="col-sm-6 score-2">
+                        <label>Time: <strong id="time"></strong></label>
                         <label>Total turn:<strong id="total-turn">3</strong> </label><br>
                         <label>intervalMillis: <strong id="time-turn-1">3</strong></label><br>
                         <label>titlePoint-2:  <strong id="title-point-2">5</strong></label><br>
@@ -70,7 +71,7 @@
     </div>
 <script>
     // get token roi dan vao day
-    var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVhbTEiLCJpYXQiOjE1NzEwNjM2OTAsImV4cCI6MTU3MTA3MDg5MH0.Gso75QZOBmte0XRHGlPCcPpO9VTY1WiwY4PaP1JFRU8";
+    var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVhbTEiLCJpYXQiOjE1NzExMzAxNjksImV4cCI6MTU3MTEzNzM2OX0.UmAqkVlVBlgec-X4jHuSVxz964A08Ua588tPIR-afRc";
     var agent_li = 0;
     var action_json = {
         "actions":[]
@@ -161,6 +162,15 @@
         $("#title-point-2").text(json.teams[1].tilePoint);
         $("#area-point-1").text(json.teams[0].areaPoint);
         $("#area-point-2").text(json.teams[1].areaPoint);
+        var timePlay = arrId[0].turnMillis + 1;
+        var x = setInterval(function() {
+            timePlay -= 1;
+            document.getElementById("time").innerHTML = timePlay;
+            if (timePlay < 0) {
+                clearInterval(x);
+                document.getElementById("time").innerHTML = "EXPIRED";
+            }
+        }, 1000);
 
 
         function postAction(){
@@ -178,7 +188,7 @@
                     console.log(error);
                 }
             }).done(function () {
-                setTimeout(function(){ location.reload(); }, ((arrId[0].turnMillis + arrId[0].intervalMillis-15)*1000));
+                setTimeout(function(){ location.reload(); }, ((arrId[0].turnMillis + arrId[0].intervalMillis-(30-timePlay))*1000));
             });
 
         }
@@ -269,11 +279,16 @@
         }
         reload();
 
+
         $("#map li").click(function () {
             agent_li = $(this).attr('value');
-            $(this).css({
-               background:'red'
-            });
+            var cl_data = ($(this).attr('class'));
+            if(cl_data === "el elTeamOne" || cl_data === "el elTeamTwo"){
+                $(this).css({
+                    background:'red'
+                });
+            }
+
 
         });
         $("#action_agent li").click(function () {
@@ -363,6 +378,7 @@
         });
 
         $("#demo").click(function () {
+            //alert(timePlay);
             var json_text = $('#json').val();
             action_json = JSON.parse(json_text);
             postAction();
