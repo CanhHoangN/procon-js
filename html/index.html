@@ -72,41 +72,20 @@
     </div>
 <script>
     // get token roi dan vao day
-    var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVhbTEiLCJpYXQiOjE1NzEyMzY0MzcsImV4cCI6MTU3MTI0MzYzN30.6QUVvWbU675xCwo53T0SGsRl2xU1IVFsNghlJgQpVb0";
+    var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVhbTEiLCJpYXQiOjE1NzEyODQwNzksImV4cCI6MTU3MTI5MTI3OX0._Ec5wa37UEjbSE3MFTdkp3TwjXlOW_yvPSM8qrK4EtA";
     var agent_li = 0;
     var action_json = {
         "actions":[]
     };
-    var json_demo = {
-        "actions": [
-            {
-                "agentID": 1,
-                "type": "move",
-                "dx": 1,
-                "dy": 1,
-                "turn":34
-            },
-            {
-                "agentID": 2,
-                "type": "move",
-                "dx": -1,
-                "dy": -1,
 
-            }
-        ]
-    };
-    var demo = {
-        "actions": [
-            {
-                "demo":1
-            }
-        ]
-    };
     $(document).ready(function () {
-        var ac = {};
+        //var ac = {};
+        var string_move = "move";
         var load = true;
         var json = {};
         var pointAgents = {};
+        var click_li_new = 0;
+        var click_li_old = 0;
         var arrId = function(){
             var arr =[];
             $.ajax({
@@ -155,15 +134,15 @@
             load = false;
             json = getState();
         //console.log("Point: "+json.teams[0].tilePoint);
-        $("#time-turn").text(arrId[0].turnMillis);
-        $("#time-turn-1").text(arrId[0].intervalMillis);
+        $("#time-turn").text(arrId[0].turnMillis/1000);
+        $("#time-turn-1").text(arrId[0].intervalMillis/1000);
         $("#title-point-1").text(json.teams[0].tilePoint);
         $("#turn").text(json.turn);
         $("#total-turn").text(arrId[0].turns);
         $("#title-point-2").text(json.teams[1].tilePoint);
         $("#area-point-1").text(json.teams[0].areaPoint);
         $("#area-point-2").text(json.teams[1].areaPoint);
-        var timePlay = arrId[0].turnMillis + 1;
+        var timePlay = (arrId[0].turnMillis/1000) + 1;
         var x = setInterval(function() {
             timePlay -= 1;
             document.getElementById("time").innerHTML = timePlay;
@@ -251,7 +230,7 @@
                         var point = checkPoint(j,i);
                         if(point.tf === true){
                            // $("#map").append("<li"+ " class="+"'"+cl+"'" +" style='width: 40px;float:left'"+" value="+"'"+point.agent+"'>".concat("("+point.agent+")"+json.points[i][j]+"</li>"));
-                            $("#map").append("<li"+ " class="+"'"+cl+"'" +" style='width: 40px;float:left;border-radius:20px'"+" value="+"'"+point.agent+"'>".concat(json.points[i][j]+"</li>"));
+                            $("#map").append("<li"+ " class="+"'"+cl+"'" +" style='width: 40px;float:left;border:1px solid red;border-radius:20px'"+" value="+"'"+point.agent+"'>".concat(json.points[i][j]+"</li>"));
                         }else
                         {
                             $("#map").append("<li"+ " class="+"'"+cl+"'" +" style='width: 40px;float:left'"+" value="+"'"+pointElTeamOne.toString()+"'>".concat(json.points[i][j]+"</li>"));
@@ -263,7 +242,7 @@
                         var point_two = checkPoint_two(j,i);
                         if(point_two.tf === true){
                             //$("#map").append("<li"+ " class="+"'"+cl+"'" +" style='width: 40px;float:left'"+" value="+"'"+point_two.agent+"'>".concat("("+point_two.agent+")"+json.points[i][j]+"</li>"));
-                            $("#map").append("<li"+ " class="+"'"+cl+"'" +" style='width: 40px;float:left;border-radius:20px'"+" value="+"'"+point_two.agent+"'>".concat(json.points[i][j]+"</li>"));
+                            $("#map").append("<li"+ " class="+"'"+cl+"'" +" style='width: 40px;float:left;border:1px solid red;border-radius:20px'"+" value="+"'"+point_two.agent+"'>".concat(json.points[i][j]+"</li>"));
                         }else
                         {
                             $("#map").append("<li"+ " class="+"'"+cl+"'" +" style='width: 40px;float:left'"+" value="+"'"+i.toString()+j.toString()+"'>".concat(json.points[i][j]+"</li>"));
@@ -294,10 +273,12 @@
 
 
         });
+
         $("#action_agent li").click(function () {
             var move = $(this).attr('value');
+
             if(move === "down"){
-                 ac ={
+                var ac ={
                     "agentID": parseInt(agent_li),
                     "dx": 0,
                     "dy": 1,
@@ -307,7 +288,7 @@
                  action_json.actions.push(ac);
                  console.log(action_json);
             }else if(move === "up"){
-                 ac ={
+                 var ac ={
                     "agentID": parseInt(agent_li),
                     "dx": 0,
                     "dy": -1,
@@ -317,7 +298,7 @@
                 action_json.actions.push(ac);
                 console.log(action_json);
             }else if(move === "right"){
-                 ac ={
+                var ac ={
                     "agentID": parseInt(agent_li),
                     "dx": 1,
                     "dy": 0,
@@ -327,7 +308,7 @@
                 action_json.actions.push(ac);
                 console.log(action_json);
             }else if(move === "left"){
-                ac ={
+                var ac ={
                     "agentID": parseInt(agent_li),
                     "dx": -1,
                     "dy": 0,
@@ -337,7 +318,7 @@
                 action_json.actions.push(ac);
                 console.log(action_json);
             }else if(move === "up-right"){
-                 ac ={
+                var ac ={
                     "agentID": parseInt(agent_li),
                     "dx": 1,
                     "dy": -1,
@@ -347,7 +328,7 @@
                 action_json.actions.push(ac);
                 console.log(action_json);
             }else if(move === "up-left"){
-                 ac ={
+                var ac ={
                     "agentID": parseInt(agent_li),
                     "dx": -1,
                     "dy": -1,
@@ -357,7 +338,7 @@
                 action_json.actions.push(ac);
                 console.log(action_json);
             }else if(move === "down-right"){
-                 ac ={
+                var ac ={
                     "agentID": parseInt(agent_li),
                     "dx": 1,
                     "dy": 1,
@@ -367,7 +348,7 @@
                 action_json.actions.push(ac);
                 console.log(action_json);
             }else if(move === "down-left"){
-                 ac ={
+                var ac ={
                     "agentID": parseInt(agent_li),
                     "dx": -1,
                     "dy": 1,
