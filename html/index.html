@@ -4,25 +4,15 @@
     <meta charset="UTF-8">
     <title>Render Map</title>
     <link rel="stylesheet" href="../cssProcon/css.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+   <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>-->
     <link rel="stylesheet" href="../css/bootstrap.css">
     <script src="../js/bootstrap.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-    <script src="https://kit.fontawesome.com/c567c646bc.js" crossorigin="anonymous"></script>
+   <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
+  <!--  <script src="https://kit.fontawesome.com/c567c646bc.js" crossorigin="anonymous"></script>-->
     <link rel="stylesheet" href="../css/font-awesome.min.css">
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/c567c646bc.js"></script>
 
-    <style>
-        .map{
-
-
-        }
-        img{
-            width: 1000px;
-            height: 200px;
-        }
-
-    </style>
 
 </head>
 
@@ -60,6 +50,17 @@
                 <li value="up-right"><i style="padding: 10px" class="fas fa-arrow-up up-right"></i></li>
                 <li value="down-right"><i style="padding: 10px" class="fas fa-arrow-up down-right"></i></li>
                 <li value="down-left"><i style="padding: 10px" class="fas fa-arrow-up down-left"></i></li>
+
+            </ul>
+            <ul id="agent">
+                <li><input type="button" value="1"></li>
+                <li><input type="button" value="2"></li>
+                <li><input type="button" value="3"></li>
+                <li><input type="button" value="4"></li>
+                <li><input type="button" value="5"></li>
+                <li><input type="button" value="6"></li>
+                <li><input type="button" value="7"></li>
+                <li><input type="button" value="8"></li>
             </ul>
             <button class="btn btn-danger" id="demo">action</button>
             <div class="json">
@@ -72,12 +73,24 @@
     </div>
 <script>
     // get token roi dan vao day
-    var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVhbTEiLCJpYXQiOjE1NzEyODQwNzksImV4cCI6MTU3MTI5MTI3OX0._Ec5wa37UEjbSE3MFTdkp3TwjXlOW_yvPSM8qrK4EtA";
+    var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidGVhbTEiLCJpYXQiOjE1NzEzMjExOTgsImV4cCI6MTU3MTMyODM5OH0.QdeZRk8Oy3Cw5MQMAnf1QSA7frdfAvjnxTQPSRkZf9E";
     var agent_li = 0;
     var action_json = {
         "actions":[]
     };
+   /* var date = new Date(1571293735274*1000);
+    // Hours part from the timestamp
+    var hours = date.getHours();
+    // Minutes part from the timestamp
+    var minutes = "0" + date.getMinutes();
+    // Seconds part from the timestamp
+    var seconds = "0" + date.getSeconds();
 
+    // Will display time in 10:30:23 format
+    var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+    console.log(formattedTime);*/
+    // http://sv-procon.uet.vnu.edu.vn:3000
+    // http://112.137.129.202:3000
     $(document).ready(function () {
         //var ac = {};
         var string_move = "move";
@@ -142,7 +155,7 @@
         $("#title-point-2").text(json.teams[1].tilePoint);
         $("#area-point-1").text(json.teams[0].areaPoint);
         $("#area-point-2").text(json.teams[1].areaPoint);
-        var timePlay = (arrId[0].turnMillis/1000) + 1;
+        var timePlay = (arrId[0].turnMillis/1000);
         var x = setInterval(function() {
             timePlay -= 1;
             document.getElementById("time").innerHTML = timePlay;
@@ -230,10 +243,10 @@
                         var point = checkPoint(j,i);
                         if(point.tf === true){
                            // $("#map").append("<li"+ " class="+"'"+cl+"'" +" style='width: 40px;float:left'"+" value="+"'"+point.agent+"'>".concat("("+point.agent+")"+json.points[i][j]+"</li>"));
-                            $("#map").append("<li"+ " class="+"'"+cl+"'" +" style='width: 40px;float:left;border:1px solid red;border-radius:20px'"+" value="+"'"+point.agent+"'>".concat(json.points[i][j]+"</li>"));
+                            $("#map").append("<li"+ " class="+"'"+cl+"'" +" style='width: 40px;float:left;border:1px solid red;border-radius:10px;background:#de9510'"+" value="+"'"+point.agent+"'>".concat('<small style="color: #026561">'+point.agent+'</small>'+' '+json.points[i][j]+"</li>"));
                         }else
                         {
-                            $("#map").append("<li"+ " class="+"'"+cl+"'" +" style='width: 40px;float:left'"+" value="+"'"+pointElTeamOne.toString()+"'>".concat(json.points[i][j]+"</li>"));
+                            $("#map").append("<li"+ " class="+"'"+cl+"'" +" style='width: 40px;float:left'"+" value="+"'"+i.toString()+j.toString()+"'>".concat(json.points[i][j]+"</li>"));
                         }
 
                         pointElTeamOne++;
@@ -242,7 +255,7 @@
                         var point_two = checkPoint_two(j,i);
                         if(point_two.tf === true){
                             //$("#map").append("<li"+ " class="+"'"+cl+"'" +" style='width: 40px;float:left'"+" value="+"'"+point_two.agent+"'>".concat("("+point_two.agent+")"+json.points[i][j]+"</li>"));
-                            $("#map").append("<li"+ " class="+"'"+cl+"'" +" style='width: 40px;float:left;border:1px solid red;border-radius:20px'"+" value="+"'"+point_two.agent+"'>".concat(json.points[i][j]+"</li>"));
+                            $("#map").append("<li"+ " class="+"'"+cl+"'" +" style='width: 40px;float:left;border:1px solid red;border-radius:10px'"+" value="+"'"+point_two.agent+"'>".concat(json.points[i][j]+"</li>"));
                         }else
                         {
                             $("#map").append("<li"+ " class="+"'"+cl+"'" +" style='width: 40px;float:left'"+" value="+"'"+i.toString()+j.toString()+"'>".concat(json.points[i][j]+"</li>"));
@@ -261,7 +274,13 @@
         }
         reload();
 
+        $("#agent li input").click(function () {
+            agent_li = $(this).attr('value');
 
+           $("li[value=".concat(agent_li+"]")).css({
+               background: 'red'
+           })
+        });
         $("#map li").click(function () {
             agent_li = $(this).attr('value');
             var cl_data = ($(this).attr('class'));

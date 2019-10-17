@@ -6,8 +6,19 @@
     cursor: pointer;
 
 }
+ul#agent {
+    padding: 0;
+
+}
+ul#agent li {
+    padding-right: 8px;
+}
+input[type="button"] {
+    width: 40px;
+}
 .elTeamOne{
     background: #d6b67c;
+
 }
 .stayHere{
     border-radius: 50%;
@@ -49,7 +60,7 @@ body{
 }
 .action-agent {
     position: absolute;
-    right: 4%;
+    right: 5%;
     top: 0%;
 }
 .json {
@@ -96,6 +107,7 @@ strong {
     color: wheat;
 }
 button#demo {
+    margin-top: 15px;
     margin-left: 39%;
     padding: 5px 26px;
 }
